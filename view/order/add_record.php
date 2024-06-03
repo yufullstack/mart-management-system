@@ -1,37 +1,58 @@
 <?php
-include("../../config/database.php");
+include('../../config/database.php');
 
-// Check if form data is received
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $employeename = $_POST['employeename'];
-    $positionid = $_POST['positionid'];
-    $sexid = $_POST['sexid'];
-    $dob = $_POST['dob'];
-    $address = $_POST['address'];
-    $phonenumber = $_POST['phonenumber'];
-    $email = $_POST['email'];
-    $telegram = $_POST['telegram'];
-    $statusid = $_POST['statusid'];
+if (!isset($_POST['employeeid'], $_POST['customerid'], $_POST['totalamount'])) {
+    die('Missing required parameters.');
+}
 
-    $targetDir = "../../public/img/";
-    $photo = basename($_FILES["photo"]["name"]);
-    $targetFilePath = $targetDir . $photo;
+$employeeid = $_POST['employeeid'];
+$customerid = $_POST['customerid'];
+$discount = $_POST['discount'] ?? 0;
+$totalamount = $_POST['totalamount'];
+$statusid = 1;
 
-    // Upload file to server
-    if(move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFilePath)){
-        // Insert data into database
-        $sql = "INSERT INTO tblemployee (employeename, positionid, sexid, dob, address, phonenumber, email, telegram, statusid, photo) 
-                VALUES ('$employeename', '$positionid', '$sexid', '$dob', '$address', '$phonenumber', '$email', '$telegram', '$statusid', '$photo')";
-        if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    } else {
-        echo "Error uploading file.";
+$conn->begin_transaction();
+
+try {
+    $stmt = $conn->prepare("INSERT INTO tblorder (employeeid, customerid, discount, totalamount, statusid) VALUES (?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        throw new Exception("Prepare statement failed: " . $conn->error);
     }
-} else {
-    echo "Invalid request.";
+    $stmt->bind_param("ssdsi", $employeeid, $customerid, $discount, $totalamount, $statusid);
+    if (!$stmt->execute()) {
+        throw new Exception("Execute statement failed: " . $stmt->error);
+    }
+    $orderid = $stmt->insert_id;
+    $stmt->close();
+
+    $productids = $_POST['productid'];
+    $quantities = $_POST['quantity'];
+    $unitprices = $_POST['unitprice'];
+    $productdiscounts = $_POST['productdiscount'];
+
+    $stmt = $conn->prepare("INSERT INTO tblorderdetail (orderid, productid, quantity, unitprice, discount, statusid) VALUES (?, ?, ?, ?, ?, ?)");
+    if (!$stmt) {
+        throw new Exception("Prepare statement for order details failed: " . $conn->error);
+    }
+
+    for ($i = 0; $i < count($productids); $i++) {
+        $productid = $productids[$i];
+        $quantity = $quantities[$i];
+        $unitprice = $unitprices[$i];
+        $productdiscount = $productdiscounts[$i];
+
+        $stmt->bind_param("isiddi", $orderid, $productid, $quantity, $unitprice, $productdiscount, $statusid);
+        if (!$stmt->execute()) {
+            throw new Exception("Execute statement for order details failed: " . $stmt->error);
+        }
+    }
+    $stmt->close();
+
+    $conn->commit();
+    echo "Order and products added successfully.";
+} catch (Exception $e) {
+    $conn->rollback();
+    echo "Failed to add order and products: " . $e->getMessage();
 }
 
 $conn->close();

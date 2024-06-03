@@ -4,21 +4,21 @@ include("../../config/database.php");
 // Initialize the options array
 $options = array();
 
-// Fetch positions
-$positionResult = $conn->query("SELECT positionid, positionname, statusid FROM tblposition WHERE statusid = 1");
-$positions = array();
-while ($row = $positionResult->fetch_assoc()) {
-    $positions[] = $row;
+// Fetch employees
+$employeeResult = $conn->query("SELECT employeeid, employeename, statusid FROM tblemployee");
+$employees = array();
+while ($row = $employeeResult->fetch_assoc()) {
+    $employees[] = $row;
 }
-$options['positions'] = $positions;
+$options['employees'] = $employees;
 
-// Fetch genders
-$genderResult = $conn->query("SELECT sexid, sexen FROM tblsex");
-$genders = array();
-while ($row = $genderResult->fetch_assoc()) {
-    $genders[] = $row;
+// Fetch customers
+$customerResult = $conn->query("SELECT customerid, customername FROM tblcustomer");
+$customers = array();
+while ($row = $customerResult->fetch_assoc()) {
+    $customers[] = $row;
 }
-$options['genders'] = $genders;
+$options['customers'] = $customers;
 
 // Fetch statuses
 $statusResult = $conn->query("SELECT statusid, statusname FROM tblstatus");
@@ -27,6 +27,14 @@ while ($row = $statusResult->fetch_assoc()) {
     $statuses[] = $row;
 }
 $options['statuses'] = $statuses;
+
+
+$resultProduct = $conn->query("SELECT productid, productname FROM tblproduct");
+$products = array();
+while ($row = $resultProduct->fetch_assoc()) {
+    $products[] = $row;
+}
+$options['products'] = $products;
 
 // Close the database connection
 $conn->close();

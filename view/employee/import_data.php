@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($handle !== FALSE) {
             fgetcsv($handle); 
-
+            
             $sql = "INSERT INTO tblemployee (employeename, positionid, sexid, dob, address, phonenumber, email, telegram, photo, statusid) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
