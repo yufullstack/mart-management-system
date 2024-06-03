@@ -1,19 +1,34 @@
 <?php
 include("../../config/database.php");
 
-$sql = "SELECT e.employeeid, e.employeename, p.positionname, se.sexen, e.dob, e.address, e.phonenumber, e.email, e.telegram, st.statusname
-FROM tblemployee e
-JOIN tblposition p ON e.positionid = p.positionid
-JOIN tblsex se ON e.sexid = se.sexid
-JOIN tblstatus st ON e.statusid = st.statusid
-WHERE e.statusid = 1;
+$sql = "SELECT 
+            o.orderid, 
+            o.orderdate, 
+            o.employeeid, 
+            e.employeename, 
+            o.customerid, 
+            c.customername, 
+            o.discount, 
+            o.totalamount, 
+            s.statusname 
+        FROM 
+            tblorder o
+        JOIN 
+            tblemployee e ON o.employeeid = e.employeeid
+        JOIN 
+            tblcustomer c ON o.customerid = c.customerid
+        JOIN 
+            tblstatus s ON o.statusid = s.statusid
+        WHERE 
+            o.statusid = 1;
 ";
+
 $result = $conn->query($sql);
 
 $data = array();
 
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+    while ($row = $result->fetch_assoc()) {
         $data[] = $row;
     }
 }

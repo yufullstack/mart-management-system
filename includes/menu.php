@@ -15,7 +15,7 @@
         <?php
         $menuItems = [
             ['href' => '/view/index.php', 'icon' => 'bx bx-home-circle', 'text' => 'Dashboard'],
-            ['href' => '/view/order/employee.php', 'icon' => 'fas fa-shopping-cart', 'text' => 'Orders'],
+            ['href' => '/view/order/index.php', 'icon' => 'fas fa-shopping-cart', 'text' => 'Orders'],
             ['href' => '/view/employee/index.php', 'icon' => 'fas fa-users', 'text' => 'Employees'],
             ['href' => '/view/customer/index.php', 'icon' => 'fas fa-user', 'text' => 'Customer'],
             ['href' => '/view/product/index.php', 'icon' => 'fas fa-box', 'text' => 'Product'],
