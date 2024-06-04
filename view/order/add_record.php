@@ -14,6 +14,7 @@ $statusid = 1;
 $conn->begin_transaction();
 
 try {
+    // Insert order
     $stmt = $conn->prepare("INSERT INTO tblorder (employeeid, customerid, discount, totalamount, statusid) VALUES (?, ?, ?, ?, ?)");
     if (!$stmt) {
         throw new Exception("Prepare statement failed: " . $conn->error);
@@ -25,6 +26,7 @@ try {
     $orderid = $stmt->insert_id;
     $stmt->close();
 
+    // Insert order details
     $productids = $_POST['productid'];
     $quantities = $_POST['quantity'];
     $unitprices = $_POST['unitprice'];
@@ -45,6 +47,17 @@ try {
         if (!$stmt->execute()) {
             throw new Exception("Execute statement for order details failed: " . $stmt->error);
         }
+
+        // Update product stock
+        $updateStmt = $conn->prepare("UPDATE tblproduct SET instock = instock - ? WHERE productid = ?");
+        if (!$updateStmt) {
+            throw new Exception("Prepare statement for updating product stock failed: " . $conn->error);
+        }
+        $updateStmt->bind_param("is", $quantity, $productid);
+        if (!$updateStmt->execute()) {
+            throw new Exception("Execute statement for updating product stock failed: " . $updateStmt->error);
+        }
+        $updateStmt->close();
     }
     $stmt->close();
 

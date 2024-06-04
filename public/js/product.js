@@ -87,6 +87,7 @@ $(document).ready(function() {
                 $('#editPriceIn').val(productData.pricein);
                 $('#editPriceOut').val(productData.priceout);
                 $('#editInStock').val(productData.instock);
+                $('#EditBarcode').val(productData.barcode);
                 $('#editStatus').val(productData.statusid);
 
                 $('#editModal').modal('show');
@@ -128,6 +129,7 @@ $(document).ready(function() {
         $('#productPriceIn').val(data.pricein);
         $('#productPriceOut').val(data.priceout);
         $('#productInStock').val(data.instock);
+        $('#productBarcode').val(data.barcode);
         $('#productDate').val(data.productdate);
         $('#productStatus').val(data.statusname);
 

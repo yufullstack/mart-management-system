@@ -120,6 +120,15 @@ $(document).ready(function() {
         updateTotalAmount();
     }
 
+
+    window.onload = function() {
+        document.getElementById('totalBeforeDiscount').value = "0.00";
+        document.getElementById('productDiscountAmount').value = "0.00";
+        document.getElementById('customerDiscountAmount').value = "0.00";
+        document.getElementById('totalDiscountAmount').value = "0.00";
+        document.getElementById('totalAmount').value = "0.00";
+    }
+
     window.updateSubtotal = function(quantityInput) {
         const productItem = quantityInput.closest('.product-item');
         const unitPrice = parseFloat(productItem.querySelector('input[name="unitprice[]"]').value);
