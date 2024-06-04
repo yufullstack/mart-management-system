@@ -47,10 +47,12 @@
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
                         <div class="mb-3">
-                            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                            <!-- <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
                                 data-bs-target="#addModal">
                                 <i class="fas fa-plus p-0 pe-2"></i> New Order
-                            </button>
+                            </button> -->
+                            <a href="pos_interface.php" class="btn btn-primary me-2"><i
+                                    class="fas fa-plus p-0 pe-2"></i> New Order</a>
                             <button type="button" class="btn btn-primary mx-2" onclick="exportData()">
                                 <i class="fas fa-file-export p-0 pe-2"></i> Export Data
                             </button>

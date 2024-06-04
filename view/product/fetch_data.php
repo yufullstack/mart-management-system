@@ -1,7 +1,7 @@
 <?php
 include("../../config/database.php");
 
-$sql = "SELECT p.productid, p.productname, c.categoryname, s.suppliername, p.quantity, p.pricein, p.priceout, p.instock, p.productimage, p.productdate, st.statusname
+$sql = "SELECT p.productid, p.productname, c.categoryname, s.suppliername, p.quantity, p.pricein, p.priceout, p.instock, p.productimage, p.productdate, st.statusname, p.barcode
 FROM tblproduct p
 JOIN tblcategory c ON p.categoryid = c.categoryid
 JOIN tblsupplier s ON p.supplierid = s.supplierid

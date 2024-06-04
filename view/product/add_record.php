@@ -10,19 +10,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pricein = $_POST['pricein'];
     $priceout = $_POST['priceout'];
     $instock = $_POST['instock'];
+    $barcode = $_POST['barcode'];
     $statusid = 1;
 
     // Function to generate a unique barcode
-    function generateBarcode($length = 12) {
-        $characters = '0123456789';
-        $barcode = '';
-        for ($i = 0; $i < $length; $i++) {
-            $barcode .= $characters[rand(0, strlen($characters) - 1)];
-        }
-        return $barcode;
-    }
+    // function generateBarcode($length = 12) {
+    //     $characters = '0123456789';
+    //     $barcode = '';
+    //     for ($i = 0; $i < $length; $i++) {
+    //         $barcode .= $characters[rand(0, strlen($characters) - 1)];
+    //     }
+    //     return $barcode;
+    // }
 
-    $barcode = generateBarcode();
+    // $barcode = generateBarcode();
 
     $targetDir = "../../public/img/";
     $productimage = basename($_FILES["productimage"]["name"]);
