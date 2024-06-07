@@ -9,21 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $quantity = $_POST['quantity'];
     $pricein = $_POST['pricein'];
     $priceout = $_POST['priceout'];
-    $instock = $_POST['instock'];
     $barcode = $_POST['barcode'];
     $statusid = 1;
-
-    // Function to generate a unique barcode
-    // function generateBarcode($length = 12) {
-    //     $characters = '0123456789';
-    //     $barcode = '';
-    //     for ($i = 0; $i < $length; $i++) {
-    //         $barcode .= $characters[rand(0, strlen($characters) - 1)];
-    //     }
-    //     return $barcode;
-    // }
-
-    // $barcode = generateBarcode();
 
     $targetDir = "../../public/img/";
     $productimage = basename($_FILES["productimage"]["name"]);
@@ -31,13 +18,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Upload file to server
     if (move_uploaded_file($_FILES["productimage"]["tmp_name"], $targetFilePath)) {
-        // Insert data into database
-        $sql = "INSERT INTO tblproduct (productname, categoryid, supplierid, quantity, pricein, priceout, instock, productimage, statusid, barcode) 
-                VALUES ('$productname', '$categoryid', '$supplierid', '$quantity', '$pricein', '$priceout', '$instock', '$productimage', $statusid, '$barcode')";
-        if ($conn->query($sql) === TRUE) {
-            echo "New record created successfully with barcode: $barcode";
+        // Insert data into tblproduct
+        $product_date = date('Y-m-d H:i:s');
+        $sql_product = "INSERT INTO tblproduct (productname, categoryid, supplierid, pricein, priceout, productimage, productdate, statusid, barcode) 
+                        VALUES ('$productname', '$categoryid', '$supplierid', '$pricein', '$priceout', '$productimage', '$product_date', '$statusid', '$barcode')";
+
+        if ($conn->query($sql_product) === TRUE) {
+            $productid = $conn->insert_id; // Get the product ID of the newly inserted product
+
+            // Insert data into tblpurchase
+            $purchase_date = date('Y-m-d H:i:s');
+            $sql_purchase = "INSERT INTO tblpurchase (productid, supplierid, quantity, purchaseprice, purchasedate) 
+                             VALUES ('$productid', '$supplierid', '$quantity', '$pricein', '$purchase_date')";
+            if ($conn->query($sql_purchase) === TRUE) {
+
+                // Update tblinventory
+                $sql_inventory = "INSERT INTO tblinventory (productid, stocklevel) 
+                                  VALUES ('$productid', '$quantity') 
+                                  ON DUPLICATE KEY UPDATE stocklevel = stocklevel + '$quantity'";
+                if ($conn->query($sql_inventory) === TRUE) {
+
+                    // Optionally, insert into tblinventorylog
+                    $change_reason = 'Purchased';
+                    $sql_inventorylog = "INSERT INTO tblinventorylog (productid, changeamount, changedate, reason, statusid) 
+                                         VALUES ('$productid', '$quantity', '$purchase_date', '$change_reason', 2)";
+                    $conn->query($sql_inventorylog);
+
+                    echo "Product added, purchase recorded, and inventory updated successfully.";
+                } else {
+                    echo "Error updating inventory: " . $conn->error;
+                }
+            } else {
+                echo "Error recording purchase: " . $conn->error;
+            }
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error adding product: " . $conn->error;
         }
     } else {
         echo "Error uploading file.";
