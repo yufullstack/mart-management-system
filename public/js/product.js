@@ -51,28 +51,30 @@ $(document).ready(function() {
             dataType: 'json'
         });
     }
-
+    
     loadOptions().done(function(options) {
         // Populate category options
         $.each(options.categories, function(index, value) {
             $('#addCategory, #editCategory').append('<option value="' + value.categoryid + '">' + value.categoryname + '</option>');
         });
-
+    
         // Populate supplier options
         $.each(options.suppliers, function(index, value) {
             $('#addSupplier, #editSupplier').append('<option value="' + value.supplierid + '">' + value.suppliername + '</option>');
         });
-
+    
         // Populate status options
         $.each(options.statuses, function(index, value) {
             $('#addStatus, #editStatus').append('<option value="' + value.statusid + '">' + value.statusname + '</option>');
         });
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error("Failed to load options: " + textStatus, errorThrown);
     });
-
+    
     $('#example tbody').on('click', 'button.editBtn', function() {
         var data = table.row($(this).parents('tr')).data();
         var productId = data.productid;
-
+    
         $.ajax({
             url: 'get_product_details.php',
             type: 'GET',
@@ -89,12 +91,15 @@ $(document).ready(function() {
                 $('#editInStock').val(productData.instock);
                 $('#EditBarcode').val(productData.barcode);
                 $('#editStatus').val(productData.statusid);
-
+    
                 $('#editModal').modal('show');
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Failed to fetch product details: " + textStatus, errorThrown);
             }
         });
     });
-
+    
     $('#editForm').on('submit', function(e) {
         e.preventDefault();
         var formData = new FormData(this);
@@ -109,10 +114,11 @@ $(document).ready(function() {
                 table.ajax.reload();
             },
             error: function(xhr, status, error) {
-                console.log("Error: " + error);
+                console.error("Failed to update record: " + error);
             }
         });
     });
+    
 
 
     $('#example tbody').on('click', 'button.viewBtn', function() {
