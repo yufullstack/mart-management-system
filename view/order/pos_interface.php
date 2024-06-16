@@ -63,43 +63,19 @@ if ($result) {
 <style>
 body {
     width: 100%;
+    height: 100vh;
 }
 
 .main-content {
     width: 100%;
     display: flex;
-    height: 100vh;
+    height: 90%;
 }
 
-.quantity-group .quantity-display {
-    border: none;
-    background: transparent;
-    pointer-events: none;
-    width: 10px;
+header {
+    width: 100%;
 }
 
-.quantity-group {
-    border: 1.5px solid #000;
-    border-radius: 5px;
-}
-
-.btn-add {
-    background: transparent;
-    border: none;
-    padding: 0 10px;
-    border-left: 1.5px solid #000;
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.btn-sub {
-    background: transparent;
-    border: none;
-    padding: 0 10px;
-    border-right: 1.5px solid #000;
-    font-size: 20px;
-    font-weight: 500;
-}
 
 .list-img {
     width: 50px;
@@ -121,35 +97,22 @@ body {
     flex: 1;
     padding: 20px;
     overflow-y: scroll;
-    /* Hide scrollbar for IE, Edge and Firefox */
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
 }
 
 .product-section::-webkit-scrollbar {
     display: none;
-    /* Hide scrollbar for Chrome, Safari and Opera */
 }
 
-/* .cart-section {
-    display: flex;
-    position: sticky;
-    top: 0;
-    height: 100%;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-} */
 
 .cart-section {
-    width: 550px;
+    width: 700px;
     display: flex;
     padding: 20px;
-    flex-direction: column;
-    height: 100vh;
 }
+
+
 
 #cart {
     flex-grow: 1;
@@ -168,7 +131,7 @@ body {
 .check-out {
     background-color: white;
     /* Optional: To match the bg-navbar-theme or give a different color */
-    padding: 15px;
+    /* padding: 15px; */
     width: 100%;
 }
 
@@ -179,25 +142,10 @@ body {
 }
 
 
-
-/* .check-out {
-    position: sticky;
-    bottom: 90px;
-    background-color: white;
-} */
-
-/* .category-btn-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-} */
-
 .category-btn-group {
-    /* background-color: #f8f9fa; */
     background-color: rgba(0, 0, 0, 0.1);
     padding: 5px 10px;
     border-radius: 8px;
-    /* Rounded corners for the container */
     background-color: #ffffff;
 }
 
@@ -269,11 +217,90 @@ body {
     border: none;
     outline: none;
 }
+
+.no-border {
+    border: none;
+}
+
+.no-border:focus {
+    outline: none !important;
+}
+
+/* invoice prin */
+.invoice-box {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    font-size: 16px;
+    line-height: 24px;
+    font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    color: #555;
+}
+
+.invoice-box table {
+    width: 100%;
+    line-height: inherit;
+    text-align: left;
+}
+
+.invoice-box table td {
+    padding: 5px;
+    vertical-align: top;
+}
+
+.invoice-box table tr td:nth-child(2) {
+    text-align: right;
+}
+
+.invoice-box table tr.top table td {
+    padding-bottom: 20px;
+}
+
+.invoice-box table tr.information table td {
+    padding-bottom: 40px;
+}
+
+.invoice-box table tr.heading td {
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.invoice-box table tr.details td {
+    padding-bottom: 20px;
+}
+
+.invoice-box table tr.item td {
+    border-bottom: 1px solid #eee;
+}
+
+.invoice-box table tr.item.last td {
+    border-bottom: none;
+}
+
+.invoice-box table tr.total td:nth-child(2) {
+    border-top: 2px solid #eee;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .invoice-box table tr.top table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+
+    .invoice-box table tr.information table td {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+}
 </style>
 
 <body>
     <header>
-        <div class="row bg-light border-bottom py-3 px-4">
+        <div class="row bg-light border-bottom py-3 px-4 m-0">
             <div class="col-3 text-white align-self-center  fs-4">
                 <input type="text" id="productSearch" class="form-control search"
                     placeholder="Scan barcode or type product name" autocomplete="off">
@@ -288,11 +315,12 @@ body {
             </div>
         </div>
     </header>
+
     <div class="main-content">
         <div class="product-section">
-            <div class="category-btn-group mb-2 d-flex flex-wrap">
+            <div class="category-btn-group mb-1 d-flex flex-wrap m-0">
                 <?php foreach ($categories as $category): ?>
-                <button type="button" class="btn category-btn mx-2 my-2" data-category="<?= $category['name'] ?>">
+                <button type="button" class="btn category-btn mx-1 my-1" data-category="<?= $category['name'] ?>">
                     <?= $category['name'] ?>
                 </button>
                 <?php endforeach; ?>
@@ -342,87 +370,214 @@ body {
                 </div>
             </div>
         </div>
-
         <!-- Cart Section -->
-        <div class="cart-section border-start border-5 border-primary bg-navbar-theme my-3 me-3 rounded">
+        <div class="cart-section border-start border-4 border-primary bg-navbar-theme mt-3 me-3 rounded">
             <form id="addForm" enctype="multipart/form-data" class="form-container">
                 <div class="row">
-                    <div class="col-5">
+                    <!-- <div class="col-5">
                         <label for="employeeid" class="form-label">Employee</label>
-                        <input type="text" class="form-control" name="employeeid" required>
-                    </div>
+                    </div> -->
+                    <input type="hidden" class="form-control" value="1" name="employeeid" required>
                     <div class="col-5">
                         <label for="customerid" class="form-label">Customer</label>
-                        <select id="customerid" name="customerid" class="product-select" required>
+                        <select id="customerid" name="customerid" class="product-select">
                             <option value="">Select Customer</option>
                             <?php
-                                while ($row = mysqli_fetch_assoc($result_customer)) {
-                                                echo "<option value='{$row['customerid']}'>{$row['customername']} - {$row['phonenumber']}</option>";
-                                }
-                            ?>
+                        while ($row = mysqli_fetch_assoc($result_customer)) {
+                                        echo "<option value='{$row['customerid']}'>{$row['customername']} - {$row['phonenumber']}</option>";
+                        }
+                    ?>
                         </select>
                     </div>
-                    <div class="col-2 align-self-center">
+                    <div class="col-2 pt-4 align-self-center">
                         <button type="button" class="btn bg-transparent" data-bs-toggle="modal"
                             data-bs-target="#addModal">
-                            <i class="fa-solid fa-user-plus fs-3"></i>
+                            <i class="fa-solid fa-user-plus fs-3 text-primary"></i>
                         </button>
                     </div>
                     <div class="col-5">
-                        <label for="addDiscount" class="form-label">Discount</label>
-                        <input type="number" class="form-control" name="discount" id="addDiscount" value="0">
+                        <label for="addDiscount" class="form-label">Customer's Discount %</label>
+                        <input type="number" class="form-control pt-2 pb-2" name="discount" id="addDiscount" value="0">
                     </div>
                 </div>
                 <div class="row m-2">
-                    <span class="col-2">Products</span>
+                    <span class="col-2">Items</span>
                     <span class="col-2">Price</span>
                     <span class="col-2">Discount</span>
-                    <span class="col-2">Quantity</span>
-                    <span class="col-2">Total</span>
+                    <span class="col-3">Quantity</span>
+                    <span class="col-3 text-center">Total</span>
                     <hr>
                 </div>
                 <div id="cart" class="mb-3">
                 </div>
                 <div class="mt-auto check-out">
-                    <div class="row border-1">
-                        <hr>
-                        <div class="col-6">
-                            <label for="totalBeforeDiscount" class="form-label">SUBTOTAL:</label>
+                    <div class="row">
+                        <div class="col-2">
+                            <span for="totalBeforeDiscount" class="">SubTotal</span>
+                            <input type="hidden" id="totalBeforeDiscount" class="form-input text-end" readonly>
                         </div>
-                        <div class="col-6">
-                            <input type="text" id="totalBeforeDiscount" class="form-input text-end" readonly>
+                        <div class="col-3">
+                            <span for="productDiscountAmount" class="">Product's Discount</span>
+                            <input type="hidden" id="productDiscountAmount" class="form-input text-end" readonly>
                         </div>
-                        <div class="col-6">
-                            <label for="customerDiscountAmount" class="form-label">Product's Discount Amount:</label>
+                        <div class="col-4">
+                            <span for="customerDiscountAmount" class="">Customer's Discount</span>
+                            <input type="hidden" id="customerDiscountAmount" class="form-input text-end" readonly>
                         </div>
-                        <div class="col-6">
-                            <input type="text" id="productDiscountAmount" class="form-input text-end" readonly>
+                        <div class="col-3">
+                            <span for="totalDiscountAmount" class="">Total Discount</span>
+                            <input type="hidden" id="totalDiscountAmount" class="form-input text-end" readonly>
                         </div>
-                        <div class="col-6">
-                            <label for="customerDiscountAmount" class="form-label">Customer's Discount Amount:</label>
+                        <hr class="my-2">
+                        <div class="col-2">
+                            <span for="totalbeforediscountdisplay" id="totalbeforediscountdisplay" class=""></span>
                         </div>
-                        <div class="col-6">
-                            <input type="text" id="customerDiscountAmount" class="form-input text-end" readonly>
+                        <div class="col-3">
+                            <span for="productDiscountAmountdisplay" id="productDiscountAmountdisplay" class=""></span>
                         </div>
-                        <div class="col-6">
-                            <label for="totalDiscountAmount" class="form-label">Total Discount Amount:</label>
+                        <div class="col-4">
+                            <span for="customerDiscountAmountdisplay" id="customerDiscountAmountdisplay"
+                                class=""></span>
                         </div>
-                        <div class="col-6">
-                            <input type="text" id="totalDiscountAmount" class="form-input text-end" readonly>
+                        <div class="col-3">
+                            <span for="totalDiscountAmountdisplay" id="totalDiscountAmountdisplay" class=""></span>
                         </div>
-                        <hr>
-                        <div class="col-6">
-                            <label for="totalAmount" class="form-label">PAYABLE AMOUNT</label>
-                        </div>
-                        <div class="col-6">
-                            <input type="text" class="form-input text-end" id="totalAmount" name="totalamount"
+                        <hr class="my-2">
+                        <div class="col-12 d-flex justify-content-evenly align-items-center">
+                            <span class="px-5 border-start">PAYABLE </span>
+                            <span class="px-5 border-end" for="totalAmountdisplay" id="totalAmountdisplay"></span>
+                            <input type="hidden" class="form-input text-end" id="totalAmount" name="totalamount"
                                 step="0.01" readonly>
                         </div>
+                        <hr class="my-2">
                     </div>
-                    <button type="submit" class="btn btn-primary">Complete Order</button>
+                    <button type="submit" class="btn btn-primary w-100 m-0">Checkout Payment</button>
                 </div>
             </form>
         </div>
+
+
+
+        <!-- Payment Modal -->
+        <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="paymentModalLabel">Complete Payment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <hr>
+                    <div class="modal-body">
+                        <form id="paymentForm">
+                            <input type="hidden" id="paymentOrderId" name="orderid">
+                            <div class="row">
+                                <div class="col-10">
+                                    <div id="paymentMethodsContainer">
+                                        <div class="payment-entry">
+                                            <div class="row mb-3">
+                                                <div class="col-6">
+                                                    <label for="paymentAmount1" class="form-label">Payment Amount
+                                                        1</label>
+                                                    <input type="number" class="form-control" id="paymentAmount1"
+                                                        name="paymentamount[]" required step="0.01">
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="paymentMethod1" class="form-label">Payment Method
+                                                        1</label>
+                                                    <select class="form-select" id="paymentMethod1"
+                                                        name="paymentmethodid[]" required></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 m-0 p-0 pt-5">
+                                        <div class="col-12 p-0 m-0 mb-3">
+                                            <button type="button" class="btn btn-primary w-100"
+                                                id="addPaymentMethod">Add
+                                                More Payment</button>
+                                        </div>
+                                        <div
+                                            class="col-6 d-flex   justify-content-between align-items-center border border-end-0 border-primary p-3 m-0">
+                                            <span>Total Items</span>
+                                            <span id="totalItems">0.00</span>
+                                        </div>
+                                        <div
+                                            class="col-6 d-flex   justify-content-between align-items-center border border-primary p-3 m-0">
+                                            <span>Refunds</span>
+                                            <span id="totalrefund">0.00</span>
+                                            <input type="hidden" id="refundAmount" name="refund" readonly>
+                                        </div>
+                                        <div
+                                            class="col-12 d-flex   justify-content-center align-items-center border border-top-0 border-primary p-3 m-0">
+                                            <span class="me-2">Total Payable</span>
+                                            <span id="totalamount_display">0.00</span>
+                                            <input type="hidden" id="totalPayment" name="totalpayment" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary w-100">Submit
+                                                Payment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <label for="" class="form-label">Quick Cash</label>
+                                    <div class="list-group border border-primary rounded-0">
+                                        <!-- exact amount -->
+                                        <button type="button" id="exactAmountButton"
+                                            class="btn btn-primary list-group-item border-bottom border-primary text-white"></button>
+                                        <button type="button"
+                                            class="btn btn-light list-group-item border-bottom border-primary quick-cash-btn"
+                                            data-amount="10">10.00</button>
+                                        <button type="button"
+                                            class="btn btn-light list-group-item border-bottom border-primary quick-cash-btn"
+                                            data-amount="20">20.00</button>
+                                        <button type="button"
+                                            class="btn btn-light list-group-item border-bottom border-primary quick-cash-btn"
+                                            data-amount="50">50.00</button>
+                                        <button type="button"
+                                            class="btn btn-light list-group-item border-bottom border-primary quick-cash-btn"
+                                            data-amount="100">100.00</button>
+                                        <button type="button"
+                                            class="btn btn-light list-group-item border-bottom border-primary quick-cash-btn"
+                                            data-amount="500">500.00</button>
+                                        <button type="button"
+                                            class="btn btn-light list-group-item border-bottom border-primary quick-cash-btn"
+                                            data-amount="1000">1000.00</button>
+                                        <button type="button" class="btn btn-light list-group-item quick-cash-btn"
+                                            data-amount="5000">5000.00</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Modal -->
+        <div class='modal fade' id='invoiceModal' tabindex='-1' aria-labelledby='invoiceModalLabel' aria-hidden='true'>
+            <div class='modal-dialog modal-lg'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                    </div>
+                    <div class='modal-body' id='invoice-box'>
+                        <!-- Invoice content will be populated here -->
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Close</button>
+                        <button type='button' class='btn btn-primary' id='printInvoice'>Print Invoice</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
 
     </div>
     <?php

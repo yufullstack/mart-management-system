@@ -1,11 +1,12 @@
 <?php
 include("../../config/database.php");
 
-$sql = "SELECT p.productid, p.productname, c.categoryname, s.suppliername, p.pricein, p.priceout, p.productimage, p.productdate, st.statusname, p.barcode
+$sql = "SELECT p.productid, p.productname, c.categoryname, s.suppliername, p.pricein, p.priceout, p.productimage, p.productdate, st.statusname, p.barcode, i.stocklevel as instock
 FROM tblproduct p
 JOIN tblcategory c ON p.categoryid = c.categoryid
 JOIN tblsupplier s ON p.supplierid = s.supplierid
 JOIN tblstatus st ON p.statusid = st.statusid
+LEFT JOIN tblinventory i ON p.productid = i.productid
 WHERE p.statusid = 1;
 ";
 $result = $conn->query($sql);

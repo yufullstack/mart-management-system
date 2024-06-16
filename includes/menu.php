@@ -19,9 +19,11 @@
             ['href' => '/view/employee/index.php', 'icon' => 'fas fa-users', 'text' => 'Employees'],
             ['href' => '/view/customer/index.php', 'icon' => 'fas fa-user', 'text' => 'Customer'],
             ['href' => '/view/product/index.php', 'icon' => 'fas fa-box', 'text' => 'Product'],
+            ['href' => '/view/inventory/index.php', 'icon' => 'fas fa-boxes', 'text' => 'Inventory'],
+            ['href' => '/view/promotion/index.php', 'icon' => 'fas fa-gift', 'text' => 'Promotions'],
             ['href' => '/view/category/index.php', 'icon' => 'fas fa-tags', 'text' => 'Category'],
             ['href' => '/view/supplier/index.php', 'icon' => 'fas fa-truck', 'text' => 'Supplier'],
-            ['href' => '/view/inventorylog/index.php', 'icon' => 'fas fa-boxes', 'text' => 'Inventory'],
+            ['href' => '/view/inventorylog/index.php', 'icon' => 'fas fa-file-alt', 'text' => 'Inventory Log'],
             ['href' => 'role.php', 'icon' => 'fas fa-user-lock', 'text' => 'Role'],
         ];
 

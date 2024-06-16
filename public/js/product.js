@@ -85,10 +85,8 @@ $(document).ready(function() {
                 $('#editName').val(productData.productname);
                 $('#editCategory').val(productData.categoryid);
                 $('#editSupplier').val(productData.supplierid);
-                $('#editQuantity').val(productData.quantity);
                 $('#editPriceIn').val(productData.pricein);
                 $('#editPriceOut').val(productData.priceout);
-                $('#editInStock').val(productData.instock);
                 $('#EditBarcode').val(productData.barcode);
                 $('#editStatus').val(productData.statusid);
     
@@ -131,7 +129,6 @@ $(document).ready(function() {
         $('#productName').val(data.productname);
         $('#productCategory').val(data.categoryname);
         $('#productSupplier').val(data.suppliername);
-        $('#productQuantity').val(data.quantity);
         $('#productPriceIn').val(data.pricein);
         $('#productPriceOut').val(data.priceout);
         $('#productInStock').val(data.instock);

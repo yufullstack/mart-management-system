@@ -168,7 +168,7 @@ include ('../../config/database.php');
         <?php
         include ("../../public/js/bootstrap_datatable.php");
         ?>
-        <script src="../../public/js/inventory.js"></script>
+        <script src="../../public/js/inventorylog.js"></script>
         <script src="../../public/vendor/js/menu.js"></script>
         <!-- Main JS -->
         <script src="../../public/js/main.js"></script>
