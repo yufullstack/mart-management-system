@@ -190,38 +190,19 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3">
-                                                    <label for="editQuantity" class="form-label">Quantity</label>
-                                                    <input type="number" class="form-control" id="editQuantity"
-                                                        name="quantity" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
                                                     <label for="editPriceIn" class="form-label">Price In</label>
                                                     <input type="number" class="form-control" id="editPriceIn"
                                                         name="pricein" step="0.01" required>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-3">
                                                     <label for="editPriceOut" class="form-label">Price Out</label>
                                                     <input type="number" class="form-control" id="editPriceOut"
                                                         name="priceout" step="0.01" required>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="mb-3">
-                                            <label for="editInStock" class="form-label">In Stock</label>
-                                            <input type="number" class="form-control" id="editInStock" name="instock"
-                                                required>
-                                        </div> -->
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <label for="editInStock" class="form-label">In Stock</label>
-                                                <input type="number" class="form-control" id="editInStock"
-                                                    name="instock" required>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="EditBarcode" class="form-label">Barcode</label>
@@ -284,35 +265,31 @@
                                                 <input type="text" class="form-control" id="productSupplier" readonly>
                                             </div>
                                             <div class="col-md-4 mb-3">
-                                                <label for="productQuantity" class="form-label">Quantity</label>
-                                                <input type="text" class="form-control" id="productQuantity" readonly>
-                                            </div>
-                                            <div class="col-md-4 mb-3">
                                                 <label for="productPriceIn" class="form-label">Price In</label>
                                                 <input type="text" class="form-control" id="productPriceIn" readonly>
                                             </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col-md-4 mb-3">
                                                 <label for="productPriceOut" class="form-label">Price Out</label>
                                                 <input type="text" class="form-control" id="productPriceOut" readonly>
                                             </div>
-                                            <div class="col-md-4 mb-3">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
                                                 <label for="productInStock" class="form-label">In Stock</label>
                                                 <input type="text" class="form-control" id="productInStock" readonly>
                                             </div>
-                                            <div class="col-md-4 mb-3">
+                                            <div class="col-md-6 mb-3">
                                                 <label for="productDate" class="form-label">Product Date</label>
                                                 <input type="text" class="form-control" id="productDate" readonly>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-4 mb-3">
+                                            <div class="col-md-6 mb-3">
                                                 <label for="productBarcode" class="form-label">Barcode</label>
                                                 <input type="text" step="0.01" class="form-control" id="productBarcode"
                                                     readonly>
                                             </div>
-                                            <div class="col-md-4 mb-3">
+                                            <div class="col-md-6 mb-3">
                                                 <label for="productStatus" class="form-label">Status</label>
                                                 <input type="text" class="form-control" id="productStatus" readonly>
                                             </div>

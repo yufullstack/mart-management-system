@@ -1,25 +1,27 @@
 <?php
-include('../../config/database.php');
+include ('../../config/database.php');
 
-if (!isset($_POST['employeeid'], $_POST['customerid'], $_POST['totalamount'])) {
-    die('Missing required parameters.');
+// Check if required parameters are set
+if (!isset($_POST['employeeid'], $_POST['customerid'], $_POST['totalamount'], $_POST['products'])) {
+    die(json_encode(['success' => false, 'message' => 'Missing required parameters.']));
 }
 
 $employeeid = $_POST['employeeid'];
 $customerid = $_POST['customerid'];
 $discount = $_POST['discount'] ?? 0;
 $totalamount = $_POST['totalamount'];
+$products = json_decode($_POST['products'], true); // Decode JSON string to array
 $statusid = 1;
 
 $conn->begin_transaction();
 
 try {
     // Insert order
-    $stmt = $conn->prepare("INSERT INTO tblorder (employeeid, customerid, discount, totalamount, statusid) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO tblorder (employeeid, customerid, discount, totalamount, statusid, orderdate) VALUES (?, ?, ?, ?, ?, NOW())");
     if (!$stmt) {
         throw new Exception("Prepare statement failed: " . $conn->error);
     }
-    $stmt->bind_param("ssdsi", $employeeid, $customerid, $discount, $totalamount, $statusid);
+    $stmt->bind_param("iisdi", $employeeid, $customerid, $discount, $totalamount, $statusid);
     if (!$stmt->execute()) {
         throw new Exception("Execute statement failed: " . $stmt->error);
     }
@@ -27,23 +29,18 @@ try {
     $stmt->close();
 
     // Insert order details
-    $productids = $_POST['productid'];
-    $quantities = $_POST['quantity'];
-    $unitprices = $_POST['unitprice'];
-    $productdiscounts = $_POST['productdiscount'];
-
     $stmt = $conn->prepare("INSERT INTO tblorderdetail (orderid, productid, quantity, unitprice, discount, statusid) VALUES (?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         throw new Exception("Prepare statement for order details failed: " . $conn->error);
     }
 
-    for ($i = 0; $i < count($productids); $i++) {
-        $productid = $productids[$i];
-        $quantity = $quantities[$i];
-        $unitprice = $unitprices[$i];
-        $productdiscount = $productdiscounts[$i];
+    foreach ($products as $product) {
+        $productid = $product['id'];
+        $quantity = $product['quantity'];
+        $unitprice = $product['price'];
+        $productdiscount = $product['discount'] ?? 0;
 
-        $stmt->bind_param("isiddi", $orderid, $productid, $quantity, $unitprice, $productdiscount, $statusid);
+        $stmt->bind_param("iiidii", $orderid, $productid, $quantity, $unitprice, $productdiscount, $statusid);
         if (!$stmt->execute()) {
             throw new Exception("Execute statement for order details failed: " . $stmt->error);
         }
@@ -54,7 +51,7 @@ try {
     echo json_encode(['success' => true, 'orderid' => $orderid]);
 } catch (Exception $e) {
     $conn->rollback();
-    echo json_encode(['success' => false, 'message' => "Failed to add order and products: " . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Failed to add order and products: ' . $e->getMessage()]);
 }
 
 $conn->close();
